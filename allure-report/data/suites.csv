@@ -1,0 +1,27 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"passed","Mon Jun 29 10:19:28 UTC 2026","Mon Jun 29 10:19:28 UTC 2026","0","tests","test_homepage","TestHomepageValidation","","","test_page_url_is_correct[chromium]","Verify the loaded URL matches the expected homepage URL."
+"passed","Mon Jun 29 10:19:26 UTC 2026","Mon Jun 29 10:19:27 UTC 2026","1282","tests","test_data_consistency","TestDataConsistency","","","test_title_and_price_consistency[chromium]","
+        For each of 5 randomly selected books, verify that:
+        - The title on the homepage matches the title on the detail page.
+        - The price on the homepage matches the price on the detail page.
+        "
+"passed","Mon Jun 29 10:19:34 UTC 2026","Mon Jun 29 10:19:34 UTC 2026","26","tests","test_homepage","TestHomepageValidation","","","test_books_section_contains_at_least_one_book[chromium]","Verify the homepage lists at least one book."
+"passed","Mon Jun 29 10:16:47 UTC 2026","Mon Jun 29 10:19:03 UTC 2026","136588","tests","test_broken_links","TestBrokenLinks","","","test_no_broken_links_on_homepage[chromium]","
+        Collect all unique URLs from the homepage anchor tags,
+        send HTTP GET requests, and assert every URL returns status 200.
+        "
+"passed","Mon Jun 29 10:19:31 UTC 2026","Mon Jun 29 10:19:31 UTC 2026","214","tests","test_homepage","TestHomepageValidation","","","test_all_visible_headings_are_present[chromium]","Verify that at least one head# ---------------------------------------------------------------------------ing exists on the homepage."
+"passed","Mon Jun 29 10:19:32 UTC 2026","Mon Jun 29 10:19:32 UTC 2026","226","tests","test_homepage","TestHomepageValidation","","","test_all_heading_texts_are_non_empty[chromium]","Verify that every visible heading contains non-empty text."
+"passed","Mon Jun 29 10:16:44 UTC 2026","Mon Jun 29 10:16:45 UTC 2026","1333","tests","test_book_navigation","TestBookNavigation","","","test_random_book_navigation[chromium]","
+        Randomly select books, navigate to each detail page, and verify:
+        - The detail page loads successfully.
+        - The H1 title matches the title shown on the homepage.
+        - The book information table is visible.
+        "
+"passed","Mon Jun 29 10:19:35 UTC 2026","Mon Jun 29 10:19:38 UTC 2026","2261","tests","test_images","TestProductImages","","","test_product_images_across_pages[chromium]","
+        Validate product image attributes on the homepage and up to
+        MAX_PAGES pages of pagination. All images must be visible and
+        have non-empty src, non-empty alt, and class containing 'thumbnail'.
+        "
+"passed","Mon Jun 29 10:19:33 UTC 2026","Mon Jun 29 10:19:33 UTC 2026","24","tests","test_homepage","TestHomepageValidation","","","test_books_section_is_visible[chromium]","Verify the books section container is rendered on the page."
+"passed","Mon Jun 29 10:19:30 UTC 2026","Mon Jun 29 10:19:30 UTC 2026","8","tests","test_homepage","TestHomepageValidation","","","test_page_title_contains_expected_text[chromium]","Verify the page title contains the expected site name."

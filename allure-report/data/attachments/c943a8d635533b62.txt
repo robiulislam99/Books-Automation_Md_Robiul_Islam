@@ -1,0 +1,2 @@
+2026-06-29 10:19:30 [INFO] Navigating to: https://books.toscrape.com/index.html
+2026-06-29 10:19:31 [INFO] Found 21 visible headings

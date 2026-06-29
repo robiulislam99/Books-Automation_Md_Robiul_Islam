@@ -1,0 +1,18 @@
+2026-06-29 10:16:43 [INFO] Navigating to: https://books.toscrape.com/index.html
+2026-06-29 10:16:44 [INFO] Collected 20 books from current page
+2026-06-29 10:16:44 [INFO] Randomly selected 5 books
+2026-06-29 10:16:44 [INFO] Clicking book at index 13
+2026-06-29 10:16:44 [INFO] Detail page H1 title: 'Scott Pilgrim's Precious Little Life (Scott Pilgrim #1)'
+2026-06-29 10:16:45 [INFO] Navigating back
+2026-06-29 10:16:45 [INFO] Clicking book at index 3
+2026-06-29 10:16:45 [INFO] Detail page H1 title: 'Sharp Objects'
+2026-06-29 10:16:45 [INFO] Navigating back
+2026-06-29 10:16:45 [INFO] Clicking book at index 6
+2026-06-29 10:16:45 [INFO] Detail page H1 title: 'The Dirty Little Secrets of Getting Your Dream Job'
+2026-06-29 10:16:45 [INFO] Navigating back
+2026-06-29 10:16:45 [INFO] Clicking book at index 12
+2026-06-29 10:16:45 [INFO] Detail page H1 title: 'Set Me Free'
+2026-06-29 10:16:45 [INFO] Navigating back
+2026-06-29 10:16:45 [INFO] Clicking book at index 4
+2026-06-29 10:16:45 [INFO] Detail page H1 title: 'Sapiens: A Brief History of Humankind'
+2026-06-29 10:16:45 [INFO] Navigating back
