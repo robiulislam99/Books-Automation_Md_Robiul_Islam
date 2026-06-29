@@ -1,0 +1,46 @@
+# Virtual Environment 
+.venv/
+venv/
+env/
+ENV/
+
+# Python Cache 
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+
+# Pytest 
+.pytest_cache/
+.cache/
+
+# Reports 
+reports/
+allure-results/
+allure-report/
+
+# Playwright Artifacts 
+test-results/
+screenshots/
+videos/
+traces/
+
+# IDE & Editor 
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS Files 
+.DS_Store
+Thumbs.db
+
+# Logs 
+*.log
+logs/
+
+# Env Files 
+.env
+.env.*
