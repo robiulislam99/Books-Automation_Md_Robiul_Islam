@@ -1,11 +1,12 @@
 """
 Shared pytest fixtures for the Books to Scrape automation suite.
 Provides browser, page, and page-object fixtures with
-screenshot/video capture and Allure attachment.
+screenshot/video capture, trace recording, and Allure attachment.
 """
 
 import os
 import shutil
+import time
 import pytest
 import allure
 from playwright.sync_api import Page
@@ -13,12 +14,14 @@ from playwright.sync_api import Page
 from pages.home_page import HomePage
 from pages.book_detail_page import BookDetailPage
 
-# Output directories 
+# Output directories
 SCREENSHOTS_DIR = "screenshots"
 VIDEOS_DIR      = "videos"
+TRACES_DIR      = "traces"
 
 os.makedirs(SCREENSHOTS_DIR, exist_ok=True)
 os.makedirs(VIDEOS_DIR, exist_ok=True)
+os.makedirs(TRACES_DIR, exist_ok=True)
 
 
 # Browser context: enable video recording
@@ -44,18 +47,32 @@ def browser_context_args(browser_context_args):
 def attach_artifacts(request, page: Page, context):
     """
     Autouse fixture that:
-    1. Takes a screenshot after the test body finishes.
-    2. Closes the browser context so Playwright finalises the video file.
-    3. Attaches the fully written video file to Allure.
-
-    Using `context` fixture directly lets us close it at the right time
-    without conflicting with pytest-playwright's internal teardown.
+    1. Starts Playwright trace recording before the test.
+    2. Takes a screenshot after the test body finishes.
+    3. Stops and saves the trace file.
+    4. Closes the browser context so Playwright finalises the video file.
+    5. Attaches screenshot, video, and trace to Allure report.
     """
-    yield  # test runs here
 
     test_name = _safe_name(request.node.name)
 
-    # 1. Screenshot (before context closes)
+    # 1. Start trace recording
+    try:
+        context.tracing.start(
+            screenshots=True,
+            snapshots=True,
+            sources=True,
+        )
+    except Exception as exc:
+        allure.attach(
+            f"Could not start trace: {exc}",
+            name="Trace start error",
+            attachment_type=allure.attachment_type.TEXT,
+        )
+
+    yield  # test runs here
+
+    # 2. Screenshot (before context closes)
     screenshot_path = os.path.join(SCREENSHOTS_DIR, f"{test_name}.png")
     try:
         page.screenshot(path=screenshot_path, full_page=True)
@@ -71,7 +88,26 @@ def attach_artifacts(request, page: Page, context):
             attachment_type=allure.attachment_type.TEXT,
         )
 
-    # 2. Save video path BEFORE closing context
+    # 3. Stop trace and save
+    trace_path = os.path.join(TRACES_DIR, f"{test_name}.zip")
+    try:
+        context.tracing.stop(path=trace_path)
+        if os.path.exists(trace_path) and os.path.getsize(trace_path) > 0:
+            with open(trace_path, "rb") as f:
+                allure.attach(
+                    f.read(),
+                    name=f"Trace – {test_name}",
+                    attachment_type="application/zip",
+                    extension=".zip",
+                )
+    except Exception as exc:
+        allure.attach(
+            f"Could not save trace: {exc}",
+            name="Trace error",
+            attachment_type=allure.attachment_type.TEXT,
+        )
+
+    # 4. Save video path BEFORE closing context
     video_src = None
     try:
         if page.video:
@@ -79,19 +115,16 @@ def attach_artifacts(request, page: Page, context):
     except Exception:
         pass
 
-    # 3. Close context → Playwright finalises the .webm file
+    # 5. Close context → Playwright finalises the .webm file
     try:
         context.close()
     except Exception:
         pass
 
-    # 4. Attach video AFTER context is closed
+    # 6. Attach video AFTER context is closed
     if video_src:
         try:
-            # Wait briefly for file to be fully written
-            import time
             time.sleep(1)
-
             if os.path.exists(video_src) and os.path.getsize(video_src) > 0:
                 named_video = os.path.join(VIDEOS_DIR, f"{test_name}.webm")
                 shutil.copy2(video_src, named_video)
