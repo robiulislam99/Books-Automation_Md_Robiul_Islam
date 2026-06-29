@@ -1,27 +1,27 @@
 "Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
-"passed","Mon Jun 29 11:09:38 UTC 2026","Mon Jun 29 11:09:39 UTC 2026","1107","tests","test_data_consistency","TestDataConsistency","","","test_title_and_price_consistency[chromium]","
-        For each of 5 randomly selected books, verify that:
-        - The title on the homepage matches the title on the detail page.
-        - The price on the homepage matches the price on the detail page.
-        "
-"passed","Mon Jun 29 11:09:43 UTC 2026","Mon Jun 29 11:09:45 UTC 2026","1932","tests","test_images","TestProductImages","","","test_product_images_across_pages[chromium]","
+"passed","Mon Jun 29 12:02:38 UTC 2026","Mon Jun 29 12:02:39 UTC 2026","454","tests","test_homepage","TestHomepageValidation","","","test_all_heading_texts_are_non_empty[chromium]","Verify that every visible heading contains non-empty text."
+"passed","Mon Jun 29 12:02:45 UTC 2026","Mon Jun 29 12:02:50 UTC 2026","5062","tests","test_images","TestProductImages","","","test_product_images_across_pages[chromium]","
         Validate product image attributes on the homepage and up to
         MAX_PAGES pages of pagination. All images must be visible and
         have non-empty src, non-empty alt, and class containing 'thumbnail'.
         "
-"passed","Mon Jun 29 11:07:17 UTC 2026","Mon Jun 29 11:07:18 UTC 2026","1058","tests","test_book_navigation","TestBookNavigation","","","test_random_book_navigation[chromium]","
+"passed","Mon Jun 29 12:02:34 UTC 2026","Mon Jun 29 12:02:34 UTC 2026","4","tests","test_homepage","TestHomepageValidation","","","test_page_title_contains_expected_text[chromium]","Verify the page title contains the expected site name."
+"passed","Mon Jun 29 12:02:41 UTC 2026","Mon Jun 29 12:02:41 UTC 2026","37","tests","test_homepage","TestHomepageValidation","","","test_books_section_is_visible[chromium]","Verify the books section container is rendered on the page."
+"passed","Mon Jun 29 11:59:41 UTC 2026","Mon Jun 29 11:59:43 UTC 2026","1922","tests","test_book_navigation","TestBookNavigation","","","test_random_book_navigation[chromium]","
         Randomly select books, navigate to each detail page, and verify:
         - The detail page loads successfully.
         - The H1 title matches the title shown on the homepage.
         - The book information table is visible.
         "
-"passed","Mon Jun 29 11:09:41 UTC 2026","Mon Jun 29 11:09:41 UTC 2026","198","tests","test_homepage","TestHomepageValidation","","","test_all_visible_headings_are_present[chromium]","Verify that at least one head# ---------------------------------------------------------------------------ing exists on the homepage."
-"passed","Mon Jun 29 11:09:43 UTC 2026","Mon Jun 29 11:09:43 UTC 2026","27","tests","test_homepage","TestHomepageValidation","","","test_books_section_contains_at_least_one_book[chromium]","Verify the homepage lists at least one book."
-"passed","Mon Jun 29 11:07:19 UTC 2026","Mon Jun 29 11:09:17 UTC 2026","118247","tests","test_broken_links","TestBrokenLinks","","","test_no_broken_links_on_homepage[chromium]","
+"passed","Mon Jun 29 12:02:36 UTC 2026","Mon Jun 29 12:02:36 UTC 2026","450","tests","test_homepage","TestHomepageValidation","","","test_all_visible_headings_are_present[chromium]","Verify that at least one head# ---------------------------------------------------------------------------ing exists on the homepage."
+"passed","Mon Jun 29 12:02:31 UTC 2026","Mon Jun 29 12:02:31 UTC 2026","1","tests","test_homepage","TestHomepageValidation","","","test_page_url_is_correct[chromium]","Verify the loaded URL matches the expected homepage URL."
+"passed","Mon Jun 29 12:02:43 UTC 2026","Mon Jun 29 12:02:43 UTC 2026","32","tests","test_homepage","TestHomepageValidation","","","test_books_section_contains_at_least_one_book[chromium]","Verify the homepage lists at least one book."
+"passed","Mon Jun 29 12:02:27 UTC 2026","Mon Jun 29 12:02:29 UTC 2026","1887","tests","test_data_consistency","TestDataConsistency","","","test_title_and_price_consistency[chromium]","
+        For each of 5 randomly selected books, verify that:
+        - The title on the homepage matches the title on the detail page.
+        - The price on the homepage matches the price on the detail page.
+        "
+"passed","Mon Jun 29 11:59:45 UTC 2026","Mon Jun 29 12:02:02 UTC 2026","136742","tests","test_broken_links","TestBrokenLinks","","","test_no_broken_links_on_homepage[chromium]","
         Collect all unique URLs from the homepage anchor tags,
         send HTTP GET requests, and assert every URL returns status 200.
         "
-"passed","Mon Jun 29 11:09:40 UTC 2026","Mon Jun 29 11:09:40 UTC 2026","8","tests","test_homepage","TestHomepageValidation","","","test_page_title_contains_expected_text[chromium]","Verify the page title contains the expected site name."
-"passed","Mon Jun 29 11:09:42 UTC 2026","Mon Jun 29 11:09:42 UTC 2026","31","tests","test_homepage","TestHomepageValidation","","","test_books_section_is_visible[chromium]","Verify the books section container is rendered on the page."
-"passed","Mon Jun 29 11:09:41 UTC 2026","Mon Jun 29 11:09:42 UTC 2026","210","tests","test_homepage","TestHomepageValidation","","","test_all_heading_texts_are_non_empty[chromium]","Verify that every visible heading contains non-empty text."
-"passed","Mon Jun 29 11:09:39 UTC 2026","Mon Jun 29 11:09:39 UTC 2026","0","tests","test_homepage","TestHomepageValidation","","","test_page_url_is_correct[chromium]","Verify the loaded URL matches the expected homepage URL."

@@ -1,0 +1,18 @@
+2026-06-29 11:59:40 [INFO] Navigating to: https://books.toscrape.com/index.html
+2026-06-29 11:59:42 [INFO] Collected 20 books from current page
+2026-06-29 11:59:42 [INFO] Randomly selected 5 books
+2026-06-29 11:59:42 [INFO] Clicking book at index 19
+2026-06-29 11:59:42 [INFO] Detail page H1 title: 'It's Only the Himalayas'
+2026-06-29 11:59:42 [INFO] Navigating back
+2026-06-29 11:59:42 [INFO] Clicking book at index 7
+2026-06-29 11:59:42 [INFO] Detail page H1 title: 'The Coming Woman: A Novel Based on the Life of the Infamous Feminist, Victoria Woodhull'
+2026-06-29 11:59:42 [INFO] Navigating back
+2026-06-29 11:59:42 [INFO] Clicking book at index 16
+2026-06-29 11:59:42 [INFO] Detail page H1 title: 'Olio'
+2026-06-29 11:59:42 [INFO] Navigating back
+2026-06-29 11:59:43 [INFO] Clicking book at index 13
+2026-06-29 11:59:43 [INFO] Detail page H1 title: 'Scott Pilgrim's Precious Little Life (Scott Pilgrim #1)'
+2026-06-29 11:59:43 [INFO] Navigating back
+2026-06-29 11:59:43 [INFO] Clicking book at index 15
+2026-06-29 11:59:43 [INFO] Detail page H1 title: 'Our Band Could Be Your Life: Scenes from the American Indie Underground, 1981-1991'
+2026-06-29 11:59:43 [INFO] Navigating back
