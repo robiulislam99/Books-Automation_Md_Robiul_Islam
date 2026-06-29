@@ -37,30 +37,26 @@ def browser_context_args(browser_context_args):
     }
 
 
-# Screenshot + video attachment on every test 
+# Screenshot capture
 
 @pytest.fixture(autouse=True)
-def attach_artifacts(request, page: Page):
+def attach_screenshot(request, page: Page):
     """
-    Autouse fixture that:
-    - Takes a screenshot after every test and attaches it to Allure.
-    - Attaches the recorded video to Allure after the test finishes.
-    Runs for every test automatically.
+    Autouse fixture that takes a full-page screenshot after every test
+    and attaches it to the Allure report.
     """
     yield  # test runs here
 
-    test_name = request.node.name.replace(" ", "_").replace("[", "_").replace("]", "_")
-
-    # Screenshot 
+    test_name = _safe_name(request.node.name)
     screenshot_path = os.path.join(SCREENSHOTS_DIR, f"{test_name}.png")
+
     try:
         page.screenshot(path=screenshot_path, full_page=True)
-        with open(screenshot_path, "rb") as f:
-            allure.attach(
-                f.read(),
-                name=f"Screenshot – {test_name}",
-                attachment_type=allure.attachment_type.PNG,
-            )
+        allure.attach.file(
+            screenshot_path,
+            name=f"Screenshot – {test_name}",
+            attachment_type=allure.attachment_type.PNG,
+        )
     except Exception as exc:
         allure.attach(
             f"Could not capture screenshot: {exc}",
@@ -68,29 +64,60 @@ def attach_artifacts(request, page: Page):
             attachment_type=allure.attachment_type.TEXT,
         )
 
-    # Video
-    try:
-        page.context.close()          # finalises the video file
-        video_path = page.video.path()
-        if video_path and os.path.exists(video_path):
-            # Rename to a meaningful name
+
+# Video capture 
+
+@pytest.fixture(autouse=True)
+def attach_video(request, page: Page):
+    """
+    Autouse fixture that waits for the video file to be finalised
+    after the browser context closes, then attaches it to Allure.
+    Video is only available after the context is fully closed —
+    this fixture hooks into the teardown phase to handle that correctly.
+    """
+    yield  # test runs here
+
+    test_name = _safe_name(request.node.name)
+
+    def _attach():
+        try:
+            video = page.video
+            if video is None:
+                return
+            video_src = video.path()
+            if not video_src or not os.path.exists(video_src):
+                return
             named_video = os.path.join(VIDEOS_DIR, f"{test_name}.webm")
-            os.replace(video_path, named_video)
-            with open(named_video, "rb") as f:
-                allure.attach(
-                    f.read(),
-                    name=f"Video – {test_name}",
-                    attachment_type=allure.attachment_type.WEBM,
-                )
-    except Exception as exc:
-        allure.attach(
-            f"Could not attach video: {exc}",
-            name="Video error",
-            attachment_type=allure.attachment_type.TEXT,
-        )
+            os.replace(video_src, named_video)
+            allure.attach.file(
+                named_video,
+                name=f"Video – {test_name}",
+                attachment_type=allure.attachment_type.WEBM,
+            )
+        except Exception as exc:
+            allure.attach(
+                f"Could not attach video: {exc}",
+                name="Video error",
+                attachment_type=allure.attachment_type.TEXT,
+            )
+
+    # Register the video attachment to run after context closes
+    request.addfinalizer(_attach)
 
 
-# Page object fixtures 
+# Helper
+
+def _safe_name(name: str) -> str:
+    """Sanitise test name for use as a filename."""
+    return (
+        name.replace(" ", "_")
+            .replace("[", "_")
+            .replace("]", "_")
+            .replace("/", "_")
+    )
+
+
+# Page object fixtures
 
 @pytest.fixture()
 def home_page(page: Page) -> HomePage:
