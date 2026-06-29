@@ -15,21 +15,21 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 logger = logging.getLogger(__name__)
 
 # Delay between each HTTP request to avoid overwhelming the server
-REQUEST_DELAY_SECONDS = 0.5
+REQUEST_DELAY_SECONDS = 1.5
 
-# Retry configuration: retry up to 3 times on connection errors
+# Retry configuration
 RETRY_STRATEGY = Retry(
-    total=3,
-    backoff_factor=1,          # waits 1s, 2s, 4s between retries
+    total=5,
+    backoff_factor=2,          # waits 2s, 4s, 8s, 16s between retries
     status_forcelist=[429, 500, 502, 503, 504],
     allowed_methods=["GET"],
+    raise_on_status=False,
 )
 
 
 def _build_session() -> requests.Session:
     """
     Build a requests Session with retry strategy and a browser-like User-Agent.
-    This prevents the server from identifying and blocking automated requests.
     """
     session = requests.Session()
     adapter = HTTPAdapter(max_retries=RETRY_STRATEGY)
@@ -40,7 +40,10 @@ def _build_session() -> requests.Session:
             "Mozilla/5.0 (X11; Linux x86_64) "
             "AppleWebKit/537.36 (KHTML, like Gecko) "
             "Chrome/120.0.0.0 Safari/537.36"
-        )
+        ),
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "en-US,en;q=0.5",
+        "Connection": "keep-alive",
     })
     return session
 
@@ -48,24 +51,36 @@ def _build_session() -> requests.Session:
 def check_url_status(url: str, timeout: int = 15) -> int:
     """
     Send an HTTP GET request to a URL and return the status code.
-    Includes retry logic and a small delay to avoid rate limiting.
+    Retries up to 3 times on ConnectionResetError before giving up.
 
     Args:
         url: The URL to check.
         timeout: Request timeout in seconds.
 
     Returns:
-        The HTTP status code, or 0 if the request fails entirely.
+        The HTTP status code, or 0 if all attempts fail.
     """
     time.sleep(REQUEST_DELAY_SECONDS)
 
     session = _build_session()
-    try:
-        response = session.get(url, timeout=timeout, allow_redirects=True, verify=False)
-        logger.info(f"URL {url} returned status {response.status_code}")
-        return response.status_code
-    except requests.RequestException as exc:
-        logger.warning(f"Request failed for {url}: {exc}")
-        return 0
-    finally:
-        session.close()
+    max_attempts = 3
+
+    for attempt in range(1, max_attempts + 1):
+        try:
+            response = session.get(url, timeout=timeout, allow_redirects=True, verify=False)
+            logger.info(f"URL {url} returned status {response.status_code}")
+            return response.status_code
+        except requests.exceptions.ConnectionError as exc:
+            logger.warning(f"Attempt {attempt}/{max_attempts} - Connection error for {url}: {exc}")
+            if attempt < max_attempts:
+                wait = attempt * 3      # 3s, 6s, 9s
+                logger.info(f"Retrying in {wait}s...")
+                time.sleep(wait)
+        except requests.RequestException as exc:
+            logger.warning(f"Request failed for {url}: {exc}")
+            break
+        finally:
+            session.close()
+
+    logger.error(f"All attempts failed for {url}")
+    return 0
