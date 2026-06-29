@@ -1,10 +1,10 @@
-# Virtual Environment 
+# Virtual Environment
 .venv/
 venv/
 env/
 ENV/
 
-# Python Cache 
+# Python Cache
 __pycache__/
 *.py[cod]
 *.pyo
@@ -33,7 +33,7 @@ traces/
 *.swo
 *~
 
-# OS Files 
+# OS Files
 .DS_Store
 Thumbs.db
 
@@ -44,3 +44,16 @@ logs/
 # Env Files 
 .env
 .env.*
+
+# Java & Allure (local tooling) 
+jdk-*/
+allure-*/
+allure.sh
+allure.zip
+allure.tgz
+*.tar.gz
+*.zip
+OpenJDK*
+
+# Python Allure Viewer (local utility) 
+view_allure.py
