@@ -5,6 +5,7 @@ screenshot/video capture and Allure attachment.
 """
 
 import os
+import shutil
 import pytest
 import allure
 from playwright.sync_api import Page
@@ -37,19 +38,25 @@ def browser_context_args(browser_context_args):
     }
 
 
-# Screenshot capture
+# Main artifact fixture
 
 @pytest.fixture(autouse=True)
-def attach_screenshot(request, page: Page):
+def attach_artifacts(request, page: Page, context):
     """
-    Autouse fixture that takes a full-page screenshot after every test
-    and attaches it to the Allure report.
+    Autouse fixture that:
+    1. Takes a screenshot after the test body finishes.
+    2. Closes the browser context so Playwright finalises the video file.
+    3. Attaches the fully written video file to Allure.
+
+    Using `context` fixture directly lets us close it at the right time
+    without conflicting with pytest-playwright's internal teardown.
     """
     yield  # test runs here
 
     test_name = _safe_name(request.node.name)
-    screenshot_path = os.path.join(SCREENSHOTS_DIR, f"{test_name}.png")
 
+    # 1. Screenshot (before context closes)
+    screenshot_path = os.path.join(SCREENSHOTS_DIR, f"{test_name}.png")
     try:
         page.screenshot(path=screenshot_path, full_page=True)
         allure.attach.file(
@@ -64,45 +71,47 @@ def attach_screenshot(request, page: Page):
             attachment_type=allure.attachment_type.TEXT,
         )
 
+    # 2. Save video path BEFORE closing context
+    video_src = None
+    try:
+        if page.video:
+            video_src = page.video.path()
+    except Exception:
+        pass
 
-# Video capture 
+    # 3. Close context → Playwright finalises the .webm file
+    try:
+        context.close()
+    except Exception:
+        pass
 
-@pytest.fixture(autouse=True)
-def attach_video(request, page: Page):
-    """
-    Autouse fixture that waits for the video file to be finalised
-    after the browser context closes, then attaches it to Allure.
-    Video is only available after the context is fully closed —
-    this fixture hooks into the teardown phase to handle that correctly.
-    """
-    yield  # test runs here
-
-    test_name = _safe_name(request.node.name)
-
-    def _attach():
+    # 4. Attach video AFTER context is closed
+    if video_src:
         try:
-            video = page.video
-            if video is None:
-                return
-            video_src = video.path()
-            if not video_src or not os.path.exists(video_src):
-                return
-            named_video = os.path.join(VIDEOS_DIR, f"{test_name}.webm")
-            os.replace(video_src, named_video)
-            allure.attach.file(
-                named_video,
-                name=f"Video – {test_name}",
-                attachment_type=allure.attachment_type.WEBM,
-            )
+            # Wait briefly for file to be fully written
+            import time
+            time.sleep(1)
+
+            if os.path.exists(video_src) and os.path.getsize(video_src) > 0:
+                named_video = os.path.join(VIDEOS_DIR, f"{test_name}.webm")
+                shutil.copy2(video_src, named_video)
+                allure.attach.file(
+                    named_video,
+                    name=f"Video – {test_name}",
+                    attachment_type=allure.attachment_type.WEBM,
+                )
+            else:
+                allure.attach(
+                    f"Video file empty or missing: {video_src}",
+                    name="Video error",
+                    attachment_type=allure.attachment_type.TEXT,
+                )
         except Exception as exc:
             allure.attach(
                 f"Could not attach video: {exc}",
                 name="Video error",
                 attachment_type=allure.attachment_type.TEXT,
             )
-
-    # Register the video attachment to run after context closes
-    request.addfinalizer(_attach)
 
 
 # Helper
