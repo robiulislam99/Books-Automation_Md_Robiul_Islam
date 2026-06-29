@@ -6,6 +6,12 @@ on:
   pull_request:
     branches: [ main, master ]
 
+# Allow GitHub Pages deployment
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -34,8 +40,15 @@ jobs:
       - name: Install Playwright browsers
         run: playwright install --with-deps chromium
 
+      - name: Install Allure CLI
+        run: |
+          curl -L https://github.com/allure-framework/allure2/releases/download/2.27.0/allure-2.27.0.tgz | tar -xz
+          sudo mv allure-2.27.0 /opt/allure
+          sudo ln -s /opt/allure/bin/allure /usr/local/bin/allure
+          allure --version
+
       - name: Create report directories
-        run: mkdir -p reports/html allure-results
+        run: mkdir -p reports/html allure-results screenshots videos traces
 
       - name: Execute all tests
         run: |
@@ -46,7 +59,13 @@ jobs:
                  -v
         continue-on-error: true
 
-      - name: Upload HTML report
+      - name: Generate Allure HTML report
+        if: always()
+        run: |
+          allure generate allure-results -o allure-report --clean
+          echo "Allure report generated successfully"
+
+      - name: Upload HTML report artifact
         uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -54,12 +73,20 @@ jobs:
           path: reports/html/
           retention-days: 14
 
-      - name: Upload Allure results
+      - name: Upload Allure results artifact
         uses: actions/upload-artifact@v4
         if: always()
         with:
           name: allure-results
           path: allure-results/
+          retention-days: 14
+
+      - name: Upload Allure HTML report artifact
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: allure-html-report
+          path: allure-report/
           retention-days: 14
 
       - name: Upload screenshots
@@ -88,3 +115,12 @@ jobs:
           path: traces/
           retention-days: 14
           if-no-files-found: ignore
+
+      - name: Deploy Allure report to GitHub Pages
+        if: always() && github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./allure-report
+          publish_branch: gh-pages
+          destination_dir: allure-report
