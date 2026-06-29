@@ -1,0 +1,18 @@
+2026-06-29 11:07:17 [INFO] Navigating to: https://books.toscrape.com/index.html
+2026-06-29 11:07:17 [INFO] Collected 20 books from current page
+2026-06-29 11:07:17 [INFO] Randomly selected 5 books
+2026-06-29 11:07:17 [INFO] Clicking book at index 8
+2026-06-29 11:07:18 [INFO] Detail page H1 title: 'The Boys in the Boat: Nine Americans and Their Epic Quest for Gold at the 1936 Berlin Olympics'
+2026-06-29 11:07:18 [INFO] Navigating back
+2026-06-29 11:07:18 [INFO] Clicking book at index 14
+2026-06-29 11:07:18 [INFO] Detail page H1 title: 'Rip it Up and Start Again'
+2026-06-29 11:07:18 [INFO] Navigating back
+2026-06-29 11:07:18 [INFO] Clicking book at index 11
+2026-06-29 11:07:18 [INFO] Detail page H1 title: 'Shakespeare's Sonnets'
+2026-06-29 11:07:18 [INFO] Navigating back
+2026-06-29 11:07:18 [INFO] Clicking book at index 9
+2026-06-29 11:07:18 [INFO] Detail page H1 title: 'The Black Maria'
+2026-06-29 11:07:18 [INFO] Navigating back
+2026-06-29 11:07:18 [INFO] Clicking book at index 1
+2026-06-29 11:07:18 [INFO] Detail page H1 title: 'Tipping the Velvet'
+2026-06-29 11:07:18 [INFO] Navigating back

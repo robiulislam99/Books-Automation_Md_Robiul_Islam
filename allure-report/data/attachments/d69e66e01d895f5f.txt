@@ -1,6 +1,0 @@
-2026-06-29 10:19:35 [INFO] Navigating to: https://books.toscrape.com/index.html
-2026-06-29 10:19:36 [INFO] Clicking Next page button
-2026-06-29 10:19:36 [INFO] Clicking Next page button
-2026-06-29 10:19:36 [INFO] Clicking Next page button
-2026-06-29 10:19:37 [INFO] Clicking Next page button
-2026-06-29 10:19:37 [INFO] Clicking Next page button

@@ -1,0 +1,23 @@
+2026-06-29 11:09:37 [INFO] Navigating to: https://books.toscrape.com/index.html
+2026-06-29 11:09:38 [INFO] Collected 20 books from current page
+2026-06-29 11:09:38 [INFO] Randomly selected 5 books
+2026-06-29 11:09:38 [INFO] Clicking book at index 9
+2026-06-29 11:09:38 [INFO] Detail page H1 title: 'The Black Maria'
+2026-06-29 11:09:38 [INFO] Detail page price: '£52.15'
+2026-06-29 11:09:38 [INFO] Navigating back
+2026-06-29 11:09:38 [INFO] Clicking book at index 17
+2026-06-29 11:09:38 [INFO] Detail page H1 title: 'Mesaerion: The Best Science Fiction Stories 1800-1849'
+2026-06-29 11:09:38 [INFO] Detail page price: '£37.59'
+2026-06-29 11:09:38 [INFO] Navigating back
+2026-06-29 11:09:38 [INFO] Clicking book at index 2
+2026-06-29 11:09:38 [INFO] Detail page H1 title: 'Soumission'
+2026-06-29 11:09:38 [INFO] Detail page price: '£50.10'
+2026-06-29 11:09:38 [INFO] Navigating back
+2026-06-29 11:09:38 [INFO] Clicking book at index 3
+2026-06-29 11:09:38 [INFO] Detail page H1 title: 'Sharp Objects'
+2026-06-29 11:09:39 [INFO] Detail page price: '£47.82'
+2026-06-29 11:09:39 [INFO] Navigating back
+2026-06-29 11:09:39 [INFO] Clicking book at index 15
+2026-06-29 11:09:39 [INFO] Detail page H1 title: 'Our Band Could Be Your Life: Scenes from the American Indie Underground, 1981-1991'
+2026-06-29 11:09:39 [INFO] Detail page price: '£57.25'
+2026-06-29 11:09:39 [INFO] Navigating back
