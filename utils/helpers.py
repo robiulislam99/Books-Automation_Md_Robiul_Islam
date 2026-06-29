@@ -3,7 +3,11 @@ Utility helper functions used across the test suite.
 """
 
 import logging
+import urllib3
 import requests
+
+# Suppress the InsecureRequestWarning for the sandbox site
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 logger = logging.getLogger(__name__)
 
@@ -20,7 +24,7 @@ def check_url_status(url: str, timeout: int = 10) -> int:
         The HTTP status code, or 0 if the request fails entirely.
     """
     try:
-        response = requests.get(url, timeout=timeout, allow_redirects=True)
+        response = requests.get(url, timeout=timeout, allow_redirects=True, verify=False)
         logger.info(f"URL {url} returned status {response.status_code}")
         return response.status_code
     except requests.RequestException as exc:
